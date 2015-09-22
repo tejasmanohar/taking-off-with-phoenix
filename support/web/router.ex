@@ -7,10 +7,17 @@ defmodule Support.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :assign_current_user
   end
 
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  scope "/api" do
+    pipe_through :api
+
+    resources "/users", UserController, except: [:new, :create, :edit, :delete]
   end
 
   scope "/", Support do
@@ -19,6 +26,19 @@ defmodule Support.Router do
     get "/", PageController, :index
     get "/register", RegistrationController, :new
     post "/register", RegistrationController, :create
+
+    get "/login", SessionController, :index
+    post "/login", SessionController, :create
+    delete "/login", SessionController, :destroy
+  end
+
+  defp assign_current_user(conn, _) do
+    if current_user_id = get_session(conn, :current_user) do
+      user = Support.Repo.get(Support.User, current_user_id)
+      assign(conn, :current_user, user)
+    else
+      assign(conn, :current_user, nil)
+    end
   end
 
   # Other scopes may use custom stacks.

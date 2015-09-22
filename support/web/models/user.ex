@@ -41,4 +41,8 @@ defmodule Support.User do
   def hash_password(password) do
     Comeonin.Bcrypt.hashpwsalt(password)
   end
+
+  def check_password(password, crypted) do
+    Comeonin.Bcrypt.checkpw(password, crypted)
+  end
 end
