@@ -12,7 +12,7 @@ defmodule Support.User do
     timestamps
   end
 
-  @required_fields ~w(name email encrypted_password)
+  @required_fields ~w(name email password password_confirmation)
   @optional_fields ~w()
 
   @doc """
@@ -24,5 +24,6 @@ defmodule Support.User do
   def changeset(model, :register, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> validate_length(:name, min: 1, message: "can't be blank.")
   end
 end
