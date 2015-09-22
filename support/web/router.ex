@@ -14,7 +14,7 @@ defmodule Support.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api" do
+  scope "/api", Support do
     pipe_through :api
 
     resources "/users", UserController, except: [:new, :create, :edit, :delete]
@@ -27,9 +27,9 @@ defmodule Support.Router do
     get "/register", RegistrationController, :new
     post "/register", RegistrationController, :create
 
-    get "/login", SessionController, :index
+    get "/login", SessionController, :new
     post "/login", SessionController, :create
-    delete "/login", SessionController, :destroy
+    delete "/logout", SessionController, :delete
   end
 
   defp assign_current_user(conn, _) do

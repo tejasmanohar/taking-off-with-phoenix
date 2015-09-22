@@ -8,7 +8,7 @@ defmodule Support.SessionController do
   end
 
   def create(conn, %{"session" => %{"email" => email, "password" => password}}) do
-    user = Repo.get_by(User, email: email, )
+    user = Repo.get_by(User, email: email)
     if user && User.check_password(password, user.encrypted_password) do
       conn
       |> put_flash(:info, "logged in.")
