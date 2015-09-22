@@ -18,6 +18,7 @@ defmodule Support.Router do
 
     get "/", PageController, :index
     get "/register", RegistrationController, :new
+    post "/register", RegistrationController, :create
   end
 
   # Other scopes may use custom stacks.
